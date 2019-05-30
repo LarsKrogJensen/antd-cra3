@@ -1,0 +1,66 @@
+.app-card {
+  background: green;
+  color: whitesmoke;
+  margin-bottom: 16px;
+  border-radius: 2px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: all .3s;
+
+  &-head {
+    height: 48px;
+    line-height: 48px;
+    border-bottom: 1px solid #106f45;
+    padding: 0 16px;
+    border-radius: 2px 2px 0 0;
+    zoom: 1;
+    margin-bottom: -1px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &-title {
+      font-size: x-large;
+      flex: 1 1 auto;
+    }
+    &-more {
+    }
+  }
+
+  &-content {
+    font-size: medium;
+    padding: 16px;
+    zoom: 1;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &-uptime {
+      display: inline;
+    }
+
+    &-version {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &-error {
+    background: red;
+    animation-name: color;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes color {
+  0% {
+    background-color: red;
+  }
+  50% {
+    background-color: darkred;
+  }
+
+  100% {
+    background-color: red;
+  }
+}

@@ -1,0 +1,9 @@
+query GetAppConfig {
+    systemAppConfig {
+        category
+        properties {
+            key
+            value
+        }
+    }
+}

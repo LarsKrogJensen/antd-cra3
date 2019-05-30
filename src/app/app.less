@@ -1,0 +1,80 @@
+//// import official less entry file
+//@import "~antd/dist/antd.less";
+//// override variables here
+//@primary-color: #00C1DE;
+
+//html, body {
+//  height: 100%;
+//  min-height: 100%;
+//  overflow: hidden;
+//}
+
+@header-background: rgb(64, 64, 64);
+
+.ant-menu-sub-on-top {
+  z-index: 4;
+}
+
+.app {
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+
+  .app-header {
+    padding: 8px 16px;
+    background-color: @header-background;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .app-logo {
+      margin-right: 16px;
+    }
+
+    .app-menu {
+      flex: 1 1 auto;
+      margin: 0 !important;
+      align-self: center;
+      background: @header-background;
+
+      //.ant-menu-dark {
+      //  color: rgba(255, 255, 255, 0.67);
+      //  //background: #404040;
+      //  z-index: 5;
+      //}
+    }
+  }
+
+  .app-header-environment-title {
+    font-weight: 700;
+  }
+
+  .app-title {
+    text-align: left;
+    margin-right: 16px;
+    color: white;
+    flex: 1 1 auto;
+  }
+
+  .app-content {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    height: 100%;
+    //padding: 16px;
+    background-color: rgb(94, 94, 94);
+  }
+
+
+  .app-search {
+    align-self: center;
+  }
+
+  .ant-menu-horizontal {
+    border-bottom-width: 0;
+  }
+}
+
+
+

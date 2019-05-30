@@ -1,0 +1,8 @@
+#import "../../../environment/environmentFragment.graphql"
+mutation UpdateEnvironment($input: UpdateEnvironmentInput!) {
+    updateEnvironment(input: $input) {
+        environment {
+            ...EnvFragment
+        }
+    }
+}

@@ -1,0 +1,7 @@
+mutation DeleteEnvironment($input: DeleteEnvironmentInput!) {
+    deleteEnvironment(input: $input) {
+        environment {
+            id
+        }
+    }
+}

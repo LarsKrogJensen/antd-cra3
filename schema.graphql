@@ -1,0 +1,199 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: RootQueryType
+    mutation: RootMutationType
+}
+
+"App interface"
+interface App {
+    category: AppCategory!
+    "Application id"
+    id: ID!
+    "Full app name"
+    longName: String!
+    "Short descriptive app name"
+    shortName: String!
+}
+
+"Represents latest metric for a montoried app"
+type AppMetrics {
+    appId: ID!
+    running: Boolean
+    scmBranch: String
+    upSince: DateTime
+    version: String
+}
+
+"Response to the create environment mutation"
+type CreateEnvironmentPayload {
+    clientMutationId: String
+    environment: Environment!
+}
+
+"Response to the delete environment mutation"
+type DeleteEnvironmentPayload {
+    clientMutationId: String
+    environment: Environment
+}
+
+"Represents a testing environment"
+type Environment {
+    "Host available within environment"
+    hosts: [String!]!
+    "Environment Id"
+    id: ID!
+    kambiApps: [KambiApp!]!
+    "Full environment name"
+    longName: String!
+    "Interval in seconds to run checks"
+    pollIntervalInSec: Int!
+    "Short descriptive name"
+    shortName: String!
+    systemApps: [SystemApp!]!
+    "Team name"
+    team: String!
+}
+
+"Represents an instance of a Kambi app, not sportsbook"
+type KambiApp implements App {
+    category: AppCategory!
+    "Test host"
+    host: String!
+    "Application id"
+    id: ID!
+    "Sportsbook specific context as they are not using monitoring status"
+    legacyContext: String
+    "Full app name"
+    longName: String!
+    metrics: AppMetrics!
+    "Test host port"
+    port: Int!
+    "Short descriptive app name"
+    shortName: String!
+}
+
+"Key/Value type"
+type KeyValue {
+    key: String!
+    value: String!
+}
+
+type RootMutationType {
+    "Create a new test environment"
+    createEnvironment(input: CreateEnvironmentInput!): CreateEnvironmentPayload!
+    "Delete an environment"
+    deleteEnvironment(input: DeleteEnvironmentInput!): DeleteEnvironmentPayload
+    "Update an environment"
+    updateEnvironment(input: UpdateEnvironmentInput!): UpdateEnvironmentPayload!
+}
+
+type RootQueryType {
+    "Return environment by id if found"
+    environment(id: String): Environment
+    "Returns all environments"
+    environments: [Environment!]!
+}
+
+"Represents an instance of a System app"
+type SystemApp implements App {
+    category: AppCategory!
+    "Application id"
+    id: ID!
+    "Full app name"
+    longName: String!
+    metrics: AppMetrics!
+    properties: [KeyValue!]!
+    "Short descriptive app name"
+    shortName: String!
+}
+
+"Response to the update environment mutation"
+type UpdateEnvironmentPayload {
+    clientMutationId: String
+    environment: Environment!
+}
+
+"Application category"
+enum AppCategory {
+    ACTIVEMQ
+    KAFKA
+    KAMBI_APP
+    ORACLE
+    POSTGRES
+    RABBITMQ
+    ZOOKEEPER
+}
+
+input CreateEnvironmentInput {
+    clientMutationId: String
+    environment: EnvironmentInput!
+}
+
+input DeleteEnvironmentInput {
+    clientMutationId: String
+    environmentId: String!
+}
+
+input EnvironmentInput {
+    "Host available within environment"
+    hosts: [String!]!
+    "Kambi Apps"
+    kambiApps: [KambiAppInput!]!
+    longName: String!
+    "Interval in seconds to run checks"
+    pollIntervalInSec: Int!
+    shortName: String!
+    "System Apps"
+    systemApps: [SystemAppInput!]!
+    "Team name"
+    team: String!
+}
+
+"Represents an instance of a Kambi app, not sportsbook"
+input KambiAppInput {
+    category: AppCategory!
+    "Test host"
+    host: String!
+    "Sportsbook specific context as they are not using monitoring status"
+    legacyContext: String
+    "Full app name"
+    longName: String!
+    "Test host port"
+    port: Int!
+    "Short descriptive app name"
+    shortName: String!
+}
+
+"Key/Value type"
+input KeyValueInput {
+    key: String!
+    value: String!
+}
+
+"Represents an instance of a System app"
+input SystemAppInput {
+    "System app category"
+    category: AppCategory!
+    "Full app name"
+    longName: String!
+    "List of key/value properties"
+    properties: [KeyValueInput!]!
+    "Short descriptive app name"
+    shortName: String!
+}
+
+input UpdateEnvironmentInput {
+    clientMutationId: String
+    environment: EnvironmentInput!
+    environmentId: String!
+}
+
+
+"""
+The `DateTime` scalar type represents a date and time in the UTC
+timezone. The DateTime appears in a JSON response as an ISO8601 formatted
+string, including UTC timezone (\"Z\"). The parsed date and time string will
+be converted to UTC and any UTC offset other than 0 will be rejected.
+"""
+scalar DateTime

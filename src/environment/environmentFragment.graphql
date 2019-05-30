@@ -1,0 +1,39 @@
+fragment EnvFragment on Environment {
+    id
+    longName
+    shortName
+    team
+    pollIntervalInSec
+    hosts
+    kambiApps {
+        id
+        shortName
+        longName
+        category
+        host
+        port
+        legacyContext
+        metrics {
+            version
+            running
+            scmBranch
+            upSince
+        }
+    }
+    systemApps {
+        id
+        longName
+        shortName
+        category
+        properties {
+            key
+            value
+        }
+        metrics {
+            version
+            running
+            scmBranch
+            upSince
+        }
+    }
+}
