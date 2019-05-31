@@ -1,4 +1,4 @@
-query Environments {
+query GetEnvironments {
   environments {
     id
     longName

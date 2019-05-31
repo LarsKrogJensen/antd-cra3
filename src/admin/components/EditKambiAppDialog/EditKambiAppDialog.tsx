@@ -96,7 +96,7 @@ class EditKambiAppDialog extends React.Component<EditKambiAppDialogProps, EditKa
                                 message: "Please input port",
                                 required: true
                             }],
-                            initialValue: app && app.port || 1600
+                            initialValue: (app && app.port) || 1600
                         })(
                             <InputNumber/>
                         )}
@@ -148,7 +148,7 @@ class EditKambiAppDialog extends React.Component<EditKambiAppDialogProps, EditKa
                     }
                     envInput.kambiApps.push(newApp)
                     onSubmit(environment.id, envInput)
-                        .then(res => onClose(false))
+                        .then(() => onClose(false))
                         .catch(error => this.setState({error: `Failed to add/update app: ${error}`}))
                 }
             }
@@ -168,6 +168,6 @@ class EditKambiAppDialog extends React.Component<EditKambiAppDialogProps, EditKa
     }
 }
 
-const WrappedForm = Form.create()(EditKambiAppDialog)
+const WrappedForm = Form.create<EditKambiAppDialogProps>()(EditKambiAppDialog)
 
 export default WrappedForm

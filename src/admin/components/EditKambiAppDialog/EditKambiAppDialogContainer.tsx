@@ -1,13 +1,13 @@
-import * as React from "react";
+import React from "react";
 import {DocumentNode} from "graphql"
-import AddKambiAppDialog from "./EditKambiAppDialog"
-import {graphql} from "react-apollo"
-import {Environment, EnvironmentInput, KambiApp, UpdateEnvironmentPayload} from "api/typings";
+import {Mutation} from "react-apollo"
+import {Environment, EnvironmentInput, KambiApp} from "api/typings";
+import {loader} from "graphql.macro";
+import EditKambiAppDialog from "./EditKambiAppDialog";
 
-const updateEnvMutation: DocumentNode = require("./updateEnvMutation.graphql")
-const envQuery: DocumentNode = require("environment/environmentQuery.graphql")
+const updateEnvMutation: DocumentNode = loader("./updateEnvMutation.graphql")
 
-interface InputProps {
+interface Props {
     app?: KambiApp
     environment: Environment
     onClose: (canceled: boolean) => void
@@ -15,29 +15,21 @@ interface InputProps {
 
 interface Response {
     updateEnvironment: {
-      environment: Environment
+        environment: Environment
     }
 }
 
-const EditKambiAppDialogContainer: React.FC<InputProps> = (props) => {
-    return <div></div>
+const EditKambiAppDialogContainer: React.FC<Props> = (props) => {
+    return (
+        <Mutation mutation={updateEnvMutation}>
+            {(updateEnv: any) => {
+                return <EditKambiAppDialog
+                    {...props}
+                    onSubmit={(envId: string, envInput: EnvironmentInput) => updateEnv({variables: {input: {environmentId: envId, environment: envInput}}})}
+                />
+            }}
+        </Mutation>
+    )
 }
 
 export default EditKambiAppDialogContainer
-
-//
-// const WrappedFormWithMutation = graphql<Response, InputProps>(updateEnvMutation, {
-//     props: ({mutate}) => ({
-//         onSubmit: (envId: string, input: EnvironmentInput) => {
-//             return mutate && mutate({
-//                 update: (store, result: any) => {
-//                     const payload: UpdateEnvironmentPayload = result.data.updateEnvironment
-//                     store.writeQuery({query: envQuery, variables: {id: envId}, data: payload})
-//                 },
-//                 variables: {input: {environmentId: envId, environment: input}}
-//             });
-//         },
-//     }),
-// })(AddKambiAppDialog);
-//
-// export default WrappedFormWithMutation

@@ -6,18 +6,6 @@ import {InMemoryCache} from "apollo-cache-inmemory";
 import ApolloClient from "apollo-client/ApolloClient";
 import {onError} from "apollo-link-error";
 
-// const retryLink = new RetryLink({
-//     delay: {
-//        initial: 5000,
-//        max: 5000,
-//        jitter: true
-//      },
-//      attempts: {
-//        max: 5,
-//        retryIf: (error, operation) => !!error
-//      }
-// })
-
 const retryLink = new RetryLink({
     delay: {
         initial: 3000,
@@ -26,6 +14,10 @@ const retryLink = new RetryLink({
     },
     attempts: {
         max: Infinity,
+        retryIf: (error, operation) => {
+            // dont retry mutations
+            return !!error && operation.query.definitions.every((value:any) => value.operation !== "mutation")
+        }
     }
 })
 const httpLink = new HttpLink({
@@ -46,7 +38,7 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 
 const apolloClient = new ApolloClient({
     cache: new InMemoryCache(),
-    link: ApolloLink.from([retryLink, errorLink, httpLink])
+    link: ApolloLink.from([errorLink, retryLink, httpLink])
 })
 
 export default apolloClient

@@ -1,14 +1,15 @@
 import React from "react";
 import {DocumentNode} from "graphql"
-import DeleteAppDialog from "./DeleteAppDialog"
-import {graphql} from "react-apollo"
-import {Environment, EnvironmentInput, KambiApp, SystemApp, UpdateEnvironmentPayload} from "api/typings";
+import {Mutation} from "react-apollo"
+import {Environment, EnvironmentInput, KambiApp, SystemApp} from "api/typings";
 import {loader} from "graphql.macro";
+import DeleteAppDialog from "./DeleteAppDialog";
 
-// const updateEnvMutation: DocumentNode = loader("../EditKambiAppDialog/updateEnvMutation.graphql")
+const updateEnvMutation: DocumentNode = loader("../EditKambiAppDialog/updateEnvMutation.graphql")
+
 // const envQuery: DocumentNode = loader("environment/environmentQuery.graphql")
 
-interface DeleteAppDialogProps {
+interface Props {
     environment: Environment,
     app: KambiApp | SystemApp,
     onClose: (canceled: boolean) => void
@@ -16,12 +17,30 @@ interface DeleteAppDialogProps {
 
 interface Response {
     updateEnvironment: {
-      environment: Environment
+        environment: Environment
     }
 }
 
-const DeleteAppDialogContainer: React.FC<DeleteAppDialogProps> = props => {
-    return <div></div>
+const DeleteAppDialogContainer: React.FC<Props> = props => {
+    return (
+        <Mutation mutation={updateEnvMutation}>
+            {(updateEnv: any) => {
+                return (
+                    <DeleteAppDialog
+                        {...props}
+                        onSubmit={(id: string, envInput: EnvironmentInput) => updateEnv({
+                            variables: {
+                                input: {
+                                    environmentId: id,
+                                    environment: envInput
+                                }
+                            }
+                        })}
+                    />
+                )
+            }}
+        </Mutation>
+    )
 }
 
 export default DeleteAppDialogContainer

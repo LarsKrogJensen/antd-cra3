@@ -112,7 +112,7 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
                                     message: "Please input poll interval",
                                     required: true
                                 }],
-                                initialValue: envToClone && envToClone.pollIntervalInSec || 10
+                                initialValue: (envToClone && envToClone.pollIntervalInSec) || 10
                             })(
                                 <InputNumber min={3} max={60}/>
                             )}

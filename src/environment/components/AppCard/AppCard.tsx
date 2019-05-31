@@ -54,12 +54,12 @@ export default class AppCard extends React.Component<AppCardProps, {}> {
     private static renderKambiAppBody(app: KambiApp) {
         return (
             <div className="app-card-content">
-                <div className="app-card-content-version">{app.metrics && app.metrics.version || "-"}</div>
-                <div>{app.metrics && app.metrics.scmBranch || "-"}</div>
+                <div className="app-card-content-version">{(app.metrics && app.metrics.version) || "-"}</div>
+                <div>{(app.metrics && app.metrics.scmBranch) || "-"}</div>
                 <div className="app-card-content-uptime"
                      title={app.metrics && app.metrics.upSince}>
-                    {app.metrics && app.metrics.upSince && moment(app.metrics.upSince).fromNow() || "-"}
-                    </div>
+                    {(app.metrics && app.metrics.upSince && moment(app.metrics.upSince).fromNow()) || "-"}
+                </div>
             </div>
         )
     }

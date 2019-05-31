@@ -1,5 +1,5 @@
 #import "./environmentFragment.graphql"
-query Env($id: ID!){
+query GetEnv($id: ID!){
   environment(id: $id) {
     ...EnvFragment
   }
