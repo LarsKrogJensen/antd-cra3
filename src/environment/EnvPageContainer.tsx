@@ -20,7 +20,7 @@ interface EnvResponse {
 
 const EnvContainer: React.FC<Props> = ({id, ...rest}) => {
     return (
-        <Query<EnvResponse> query={environmentQuery} variables={{id}} pollInterval={5000}>
+        <Query<EnvResponse> query={environmentQuery} variables={{id}}>
             {({networkStatus, error, data}) => {
                 return <EnvPage {...rest}
                                 loading={networkStatus === 1}

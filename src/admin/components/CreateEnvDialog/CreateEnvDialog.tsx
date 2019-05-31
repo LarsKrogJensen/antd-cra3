@@ -206,16 +206,19 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
         form.validateFields((err, value) => {
                 if (!err) {
                     let envInput: EnvironmentInput
+                    const hosts: string[] = Object.entries(value)
+                        .filter(([k]) => k.startsWith("host"))
+                        .map(([, v]) => v.toString())
                     if (envToClone) {
-                        envInput = cloneEnv(envToClone)
-                        envInput.pollIntervalInSec = value.pollIntervalInSec
-                        envInput.shortName = value.shortName
-                        envInput.longName = value.longName
-                        envInput.team = value.team
+                        envInput = {
+                            ...cloneEnv(envToClone),
+                            pollIntervalInSec: value.pollIntervalInSec,
+                            shortName: value.shortName,
+                            longName: value.longName,
+                            team: value.team,
+                            hosts: hosts
+                        }
                     } else {
-                        const hosts: string[] = Object.entries(value)
-                                                   .filter(([k]) => k.startsWith("host"))
-                                                   .map(([, v]) => v.toString())
                         envInput = {
                             shortName: value.shortName,
                             longName: value.longName,
@@ -225,12 +228,9 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
                             kambiApps: [],
                             systemApps: []
                         }
-
                     }
-
-
                     onSubmit(envInput)
-                        .then(res => onComplete(res))
+                        .then(res => onComplete(res.data.createEnvironment.environment.id))
                         .catch(error => this.setState({error}))
                 }
             }

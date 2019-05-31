@@ -96,7 +96,8 @@ export default class AppHeader extends React.Component<AppHeaderProps, AppHeader
     }
 
     private findSelectedEnvironment = (environments: Environment[], selectedEnvId: string): Environment | undefined => {
-        return environments.find(env => env.id === selectedEnvId);
+        return environments.find(env => env.id === selectedEnvId) ||
+            environments.find(env => env.shortName === selectedEnvId)
     }
 
     private toggleSideMenu = () => {

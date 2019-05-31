@@ -1,12 +1,12 @@
 import React from "react";
 import {DocumentNode} from "graphql"
-import CreateEnvDialog from "./CreateEnvDialog"
-import {graphql} from "react-apollo"
-import {Environment, EnvironmentInput} from "api/typings";
+import {Mutation} from "react-apollo"
+import {Environment} from "api/typings";
 import {loader} from "graphql.macro";
+import CreateEnvDialog from "./CreateEnvDialog";
 
-// const createEnv: DocumentNode = loader("./createEnvMutation.graphql")
-// const environments: DocumentNode = loader("app/AppHeader/environmentsQuery.graphql")
+const createEnvMutation: DocumentNode = loader("./createEnvMutation.graphql")
+const environmentsQuery: DocumentNode = loader("../../../app/AppHeader/environmentsQuery.graphql")
 
 interface InputProps {
     onComplete: (createdEnvId?: string) => void
@@ -20,7 +20,29 @@ interface Response {
 }
 
 const CreateEnvDialogContainer: React.FC<InputProps> = (props) => {
-    return <div></div>
+    return (
+        <Mutation
+            mutation={createEnvMutation}
+            update={(cache:any, {data}: any) => {
+                const {environments} = cache.readQuery({query: environmentsQuery});
+                environments.push(data.createEnvironment.environment)
+                cache.writeQuery({
+                    query: environmentsQuery,
+                    data: {environments},
+                });
+            }}
+        >
+            {
+                (createEnv: any, {data}: any) => {
+                    console.log(data);
+                    return <CreateEnvDialog
+                        {...props}
+                        onSubmit={(env) => createEnv({variables: {input: {environment: env}}})}
+                    />
+                }
+            }
+        </Mutation>
+    )
 }
 
 export default CreateEnvDialogContainer

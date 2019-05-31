@@ -18,7 +18,7 @@ interface App {
 
 "Represents latest metric for a montoried app"
 type AppMetrics {
-    appId: ID!
+    id: ID!
     running: Boolean
     scmBranch: String
     upSince: DateTime

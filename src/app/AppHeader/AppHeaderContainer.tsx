@@ -15,7 +15,7 @@ interface Props {
 
 const AppHeaderContainer: React.FC<Props> = (props) => {
     return (
-        <Query query={environmentsQuery} pollInterval={5000}>
+        <Query query={environmentsQuery}>
             {({loading, error, data}: any) => {
                 return <AppHeader {...props}
                                   loading={loading}
