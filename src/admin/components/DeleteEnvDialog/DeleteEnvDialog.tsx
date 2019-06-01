@@ -1,5 +1,4 @@
-import * as React from "react";
-import {FormEvent} from "react";
+import React, {FormEvent} from "react";
 import {Alert, Button, Col, Form, Modal, Row} from "antd"
 import {Environment} from "api/typings";
 
@@ -11,13 +10,13 @@ interface DeleteEnvDialogProps {
 
 interface DeleteEnvDialogState {
     error?: string
+    saving: boolean
 }
 
 class DeleteEnvironmentDialog extends React.Component<DeleteEnvDialogProps, DeleteEnvDialogState> {
-
-    constructor(props: DeleteEnvDialogProps, context: any) {
-        super(props, context);
-        this.state = {}
+    state = {
+        saving: false,
+        error: undefined
     }
 
     public render() {
@@ -40,9 +39,14 @@ class DeleteEnvironmentDialog extends React.Component<DeleteEnvDialogProps, Dele
                     </Row>
                     <Row style={{marginTop: 16}}>
                         <Col span={24} style={{textAlign: 'right'}}>
-                            <Button type="primary" htmlType="submit" size="large">OK</Button>
+                            <Button type="primary"
+                                    htmlType="submit"
+                                    loading={this.state.saving}
+                                    disabled={this.state.saving}
+                                    size="large">OK</Button>
                             <Button style={{marginLeft: 8}}
                                     size="large"
+                                    disabled={this.state.saving}
                                     onClick={() => this.props.onClose(true)}>
                                 Cancel
                             </Button>
@@ -59,6 +63,7 @@ class DeleteEnvironmentDialog extends React.Component<DeleteEnvDialogProps, Dele
         submit(environment.id)
             .then(res => onClose(false))
             .catch(error => this.setState({error}))
+        this.setState({saving: true})
     }
 
 }

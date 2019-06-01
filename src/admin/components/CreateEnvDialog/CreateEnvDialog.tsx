@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import {FormEvent} from "react"
 import {Alert, Button, Col, Form, Icon, Input, InputNumber, Modal, Row} from "antd"
 import {FormComponentProps} from "antd/lib/form/Form"
@@ -16,6 +16,7 @@ interface CreateEnvDialogState {
     error?: string
     hostKeys: number[],
     hostValues: any
+    saving: boolean
 }
 
 class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, CreateEnvDialogState> {
@@ -36,7 +37,8 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
         }
         this.state = {
             hostKeys: initialHostKeys,
-            hostValues: initialHostValues
+            hostValues: initialHostValues,
+            saving: false
         }
     }
 
@@ -130,9 +132,14 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
                     </Row>
                     <Row style={{marginTop: 16}}>
                         <Col span={24} style={{textAlign: "right"}}>
-                            <Button type="primary" htmlType="submit" size="large">OK</Button>
+                            <Button type="primary"
+                                    htmlType="submit"
+                                    loading={this.state.saving}
+                                    disabled={this.state.saving}
+                                    size="large">OK</Button>
                             <Button style={{marginLeft: 8}}
                                     size="large"
+                                    disabled={this.state.saving}
                                     onClick={() => this.props.onComplete()}>
                                 Cancel
                             </Button>
@@ -232,6 +239,7 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
                     onSubmit(envInput)
                         .then(res => onComplete(res.data.createEnvironment.environment.id))
                         .catch(error => this.setState({error}))
+                    this.setState({saving: true})
                 }
             }
         )

@@ -15,15 +15,16 @@ interface EditKambiAppDialogProps extends FormComponentProps {
 
 interface EditKambiAppDialogState {
     error?: string
+    saving: boolean
 }
-
 
 class EditKambiAppDialog extends React.Component<EditKambiAppDialogProps, EditKambiAppDialogState> {
 
-    constructor(props: EditKambiAppDialogProps, context: any) {
-        super(props, context);
-        this.state = {}
+    state = {
+        saving: false,
+        error: undefined
     }
+
 
     public render() {
         const formItemLayout = {
@@ -114,8 +115,13 @@ class EditKambiAppDialog extends React.Component<EditKambiAppDialogProps, EditKa
                     </Row>
                     <Row style={{marginTop: 16}}>
                         <Col span={24} style={{textAlign: 'right'}}>
-                            <Button type="primary" htmlType="submit" size="large">OK</Button>
+                            <Button type="primary"
+                                    loading={this.state.saving}
+                                    disabled={this.state.saving}
+                                    htmlType="submit"
+                                    size="large">OK</Button>
                             <Button style={{marginLeft: 8}}
+                                    disabled={this.state.saving}
                                     size="large"
                                     onClick={() => this.props.onClose(true)}>
                                 Cancel
@@ -150,6 +156,7 @@ class EditKambiAppDialog extends React.Component<EditKambiAppDialogProps, EditKa
                     onSubmit(environment.id, envInput)
                         .then(() => onClose(false))
                         .catch(error => this.setState({error: `Failed to add/update app: ${error}`}))
+                    this.setState({saving: true})
                 }
             }
         )

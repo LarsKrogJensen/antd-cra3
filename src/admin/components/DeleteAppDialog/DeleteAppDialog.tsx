@@ -13,13 +13,13 @@ interface DeleteAppDialogProps {
 
 interface DeleteAppDialogState {
     error?: string
+    saving: boolean
 }
 
 class DeleteAppDialog extends React.Component<DeleteAppDialogProps, DeleteAppDialogState> {
-
-    constructor(props: DeleteAppDialogProps, context: any) {
-        super(props, context);
-        this.state = {}
+    state = {
+        saving: false,
+        error: undefined
     }
 
     public render() {
@@ -43,9 +43,14 @@ class DeleteAppDialog extends React.Component<DeleteAppDialogProps, DeleteAppDia
                     </Row>
                     <Row style={{marginTop: 16}}>
                         <Col span={24} style={{textAlign: 'right'}}>
-                            <Button type="primary" htmlType="submit" size="large">OK</Button>
+                            <Button type="primary"
+                                    htmlType="submit"
+                                    disabled={this.state.saving}
+                                    loading={this.state.saving}
+                                    size="large">OK</Button>
                             <Button style={{marginLeft: 8}}
                                     size="large"
+                                    disabled={this.state.saving}
                                     onClick={() => this.props.onClose(true)}>
                                 Cancel
                             </Button>
@@ -62,6 +67,7 @@ class DeleteAppDialog extends React.Component<DeleteAppDialogProps, DeleteAppDia
 
         const envInput: EnvironmentInput = cloneEnv(environment, (id) => id !== app.id)
 
+        this.setState({saving: true})
         onSubmit(environment.id, envInput)
             .then(() => onClose(false))
             .catch(error => this.setState({error}))

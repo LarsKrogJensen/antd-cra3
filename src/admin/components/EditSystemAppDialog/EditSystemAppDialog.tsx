@@ -1,5 +1,4 @@
-import * as React from "react";
-import {FormEvent, ReactNode} from "react";
+import React, {FormEvent, ReactNode} from "react";
 import {Alert, Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin} from "antd"
 import {FormComponentProps} from "antd/lib/form/Form";
 import {Environment, EnvironmentInput, KeyValue, SystemApp, SystemAppConfig, SystemAppInput} from "api/typings";
@@ -17,13 +16,17 @@ export interface EditSystemAppDialogProps extends FormComponentProps {
 interface EditSystemAppDialogState {
     error?: string
     category?: string
+    saving: boolean
 }
 
 class EditSystemAppDialog extends React.Component<EditSystemAppDialogProps, EditSystemAppDialogState> {
 
     constructor(props: EditSystemAppDialogProps, context: any) {
         super(props, context);
-        this.state = {category: props.app && props.app.category}
+        this.state = {
+            category: props.app && props.app.category,
+            saving: false
+        }
     }
 
     public render() {
@@ -58,8 +61,13 @@ class EditSystemAppDialog extends React.Component<EditSystemAppDialogProps, Edit
                     </Row>
                     <Row style={{marginTop: 16}}>
                         <Col span={24} style={{textAlign: 'right'}}>
-                            <Button type="primary" htmlType="submit" size="large">OK</Button>
+                            <Button type="primary"
+                                    htmlType="submit"
+                                    loading={this.state.saving}
+                                    disabled={this.state.saving}
+                                    size="large">OK</Button>
                             <Button style={{marginLeft: 8}}
+                                    disabled={this.state.saving}
                                     size="large"
                                     onClick={() => onClose(true)}>
                                 Cancel
