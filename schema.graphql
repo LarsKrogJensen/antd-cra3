@@ -81,7 +81,7 @@ type KeyValue {
 
 type RootMutationType {
     "Create a new test environment"
-    createEnvironment(input: CreateEnvironmentInput!): CreateEnvironmentPayload!
+    createEnvironment(input: CreateEnvironmentInput!): CreateEnvironmentPayload
     "Delete an environment"
     deleteEnvironment(input: DeleteEnvironmentInput!): DeleteEnvironmentPayload
     "Update an environment"
@@ -93,6 +93,7 @@ type RootQueryType {
     environment(id: String): Environment
     "Returns all environments"
     environments: [Environment!]!
+    systemAppConfig: [SystemAppConfig!]!
 }
 
 "Represents an instance of a System app"
@@ -106,6 +107,12 @@ type SystemApp implements App {
     properties: [KeyValue!]!
     "Short descriptive app name"
     shortName: String!
+}
+
+"Represents a system app config properties"
+type SystemAppConfig {
+    category: AppCategory!
+    properties: [KeyValue!]!
 }
 
 "Response to the update environment mutation"

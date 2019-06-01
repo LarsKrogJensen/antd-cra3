@@ -165,18 +165,18 @@ class EditSystemAppDialog extends React.Component<EditSystemAppDialogProps, Edit
     private handleSubmitForm = (e: FormEvent<any>) => {
         e.preventDefault()
         const {form, onSubmit, onClose, environment, app, systemAppConfig} = this.props;
-        form.validateFields((err, value: any) => {
-                if (!err && this.ensureUniqueAppName(value.shortName, environment, app)) {
+        form.validateFields((err, formValues: any) => {
+                if (!err && this.ensureUniqueAppName(formValues.shortName, environment, app)) {
                     const newApp: SystemAppInput = {
-                        shortName: value.shortName,
-                        longName: value.longName,
-                        category: value.category,
+                        shortName: formValues.shortName,
+                        longName: formValues.longName,
+                        category: formValues.category,
                         properties: []
                     }
                     const config = systemAppConfig.find(sysAppConf => sysAppConf.category === this.state.category)
                     if (config) {
                         for (const {key} of config.properties) {
-                            newApp.properties.push({key, value: value[key]})
+                            newApp.properties.push({key, value: formValues[key].toString()})
                         }
                     }
                     let envInput: EnvironmentInput
@@ -209,6 +209,6 @@ class EditSystemAppDialog extends React.Component<EditSystemAppDialogProps, Edit
     }
 }
 
-const WrappedForm = Form.create()(EditSystemAppDialog)
+const WrappedForm = Form.create<EditSystemAppDialogProps>()(EditSystemAppDialog)
 
 export default WrappedForm

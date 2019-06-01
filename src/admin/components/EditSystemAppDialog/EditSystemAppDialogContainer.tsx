@@ -1,16 +1,12 @@
 import * as React from "react";
 import {DocumentNode} from "graphql"
-import AddSystemAppDialog from "./EditSystemAppDialog"
-import {graphql, OptionProps, QueryProps} from "react-apollo"
-import {
-    Environment, EnvironmentInput, SystemApp, SystemAppConfig,
-    UpdateEnvironmentPayload
-} from "api/typings";
+import {Mutation, Query} from "react-apollo"
+import {Environment, EnvironmentInput, SystemApp} from "api/typings";
 import {loader} from "graphql.macro";
+import EditSystemAppDialog from "./EditSystemAppDialog";
 
-// const updateEnvMutation: DocumentNode = loader("../EditKambiAppDialog/updateEnvMutation.graphql")
-// const systemAppConfigQuery: DocumentNode = loader("./systemAppConfigQuery.graphql");
-// const envQuery: DocumentNode = loader("environment/environmentQuery.graphql")
+const updateEnvMutation: DocumentNode = loader("../EditKambiAppDialog/updateEnvMutation.graphql")
+const systemAppConfigQuery: DocumentNode = loader("./systemAppConfigQuery.graphql");
 
 interface InputProps {
     app?: SystemApp
@@ -18,9 +14,34 @@ interface InputProps {
     onClose: (canceled: boolean) => void
 }
 
-
 const EditSystemAppDialogContainer: React.FC<InputProps> = (props) => {
-    return <div></div>
+    return (
+        <Query query={systemAppConfigQuery}>
+            {({loading, data}: any) => {
+                return (
+                    <Mutation mutation={updateEnvMutation}>
+                        {(updateEnv: any) => {
+                            return (
+                                <EditSystemAppDialog
+                                    {...props}
+                                    loading={loading}
+                                    systemAppConfig={data.systemAppConfig}
+                                    onSubmit={(envId: string, envInput: EnvironmentInput) => updateEnv({
+                                        variables: {
+                                            input: {
+                                                environmentId: envId,
+                                                environment: envInput
+                                            }
+                                        }
+                                    })}
+                                />
+                            )
+                        }}
+                    </Mutation>
+                )
+            }}
+        </Query>
+    )
 }
 
 export default EditSystemAppDialogContainer
