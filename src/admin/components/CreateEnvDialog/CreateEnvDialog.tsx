@@ -1,5 +1,4 @@
-import React from "react"
-import {FormEvent} from "react"
+import React, {FormEvent} from "react"
 import {Alert, Button, Col, Form, Icon, Input, InputNumber, Modal, Row} from "antd"
 import {FormComponentProps} from "antd/lib/form/Form"
 import {Environment, EnvironmentInput} from "api/typings"
@@ -33,8 +32,11 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
                 initialHostKeys.push(index)
                 initialHostValues[`host${index}`] = host
             })
-
+        } else {
+            initialHostKeys.push(1)
+            initialHostValues["host1"] = ""
         }
+
         this.state = {
             hostKeys: initialHostKeys,
             hostValues: initialHostValues,
@@ -108,7 +110,7 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
                     </Form.Item>
 
                     <Input.Group>
-                        <Form.Item label="Poll Interval" hasFeedback {...formItemLayout}>
+                        <Form.Item label="Poll Interval" hasFeedback={false} {...formItemLayout}>
                             {getFieldDecorator("pollIntervalInSec", {
                                 rules: [{
                                     message: "Please input poll interval",
@@ -118,7 +120,7 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
                             })(
                                 <InputNumber min={3} max={60}/>
                             )}
-                            <span>Seconds</span>
+                            <span style={{marginLeft: 8}}>Seconds</span>
                         </Form.Item>
                     </Input.Group>
                     {this.renderHostItems(formItemLayout, formItemLayoutWithOutLabel)}
@@ -244,7 +246,6 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
             }
         )
     }
-
 }
 
 const WrappedForm = Form.create<CreateEnvDialogProps>()(CreateEnvironmentDialog)
