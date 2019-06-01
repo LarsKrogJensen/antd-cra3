@@ -16,20 +16,9 @@ export interface EnvPageProps {
     actionDelegate: EnvActionDelegate;
 }
 
-interface EnvPageState {
-}
 
-export default class EnvPage extends React.Component<EnvPageProps, EnvPageState> {
-
-    constructor(props: EnvPageProps, context: any) {
-        super(props, context);
-        this.state = {}
-    }
-
-    public componentWillReceiveProps(nextProps: Readonly<EnvPageProps>, nextContext: any): void {
-        console.log("new props")
-    }
-
+export default class EnvPage extends React.Component<EnvPageProps> {
+    
     public render() {
         const {environment, error, loading, actionDelegate} = this.props;
 
