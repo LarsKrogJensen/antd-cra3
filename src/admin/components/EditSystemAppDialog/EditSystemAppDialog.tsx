@@ -198,7 +198,8 @@ class EditSystemAppDialog extends React.Component<EditSystemAppDialogProps, Edit
 
                     onSubmit(environment.id, envInput)
                         .then(() => onClose(false))
-                        .catch(error => this.setState({error: `Failed to add/update app to environment ${error}`}))
+                        .catch(error => this.setState({error: `Failed to add/update app to environment ${error}`, saving: false}))
+                    this.setState({saving: true})
                 }
             }
         )

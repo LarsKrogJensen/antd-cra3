@@ -240,7 +240,7 @@ class CreateEnvironmentDialog extends React.Component<CreateEnvDialogProps, Crea
                     }
                     onSubmit(envInput)
                         .then(res => onComplete(res.data.createEnvironment.environment.id))
-                        .catch(error => this.setState({error}))
+                        .catch(error => this.setState({error, saving: false}))
                     this.setState({saving: true})
                 }
             }

@@ -70,7 +70,8 @@ class DeleteAppDialog extends React.Component<DeleteAppDialogProps, DeleteAppDia
         this.setState({saving: true})
         onSubmit(environment.id, envInput)
             .then(() => onClose(false))
-            .catch(error => this.setState({error}))
+            .catch(error => this.setState({error, saving: false}))
+        this.setState({saving: true})
     }
 
 }

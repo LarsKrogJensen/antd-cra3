@@ -155,7 +155,7 @@ class EditKambiAppDialog extends React.Component<EditKambiAppDialogProps, EditKa
                     envInput.kambiApps.push(newApp)
                     onSubmit(environment.id, envInput)
                         .then(() => onClose(false))
-                        .catch(error => this.setState({error: `Failed to add/update app: ${error}`}))
+                        .catch(error => this.setState({error: `Failed to add/update app: ${error}`, saving: false}))
                     this.setState({saving: true})
                 }
             }

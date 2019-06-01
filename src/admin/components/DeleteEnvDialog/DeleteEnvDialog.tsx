@@ -62,7 +62,7 @@ class DeleteEnvironmentDialog extends React.Component<DeleteEnvDialogProps, Dele
         const {submit, onClose, environment} = this.props;
         submit(environment.id)
             .then(res => onClose(false))
-            .catch(error => this.setState({error}))
+            .catch(error => this.setState({error, saving: false}))
         this.setState({saving: true})
     }
 
